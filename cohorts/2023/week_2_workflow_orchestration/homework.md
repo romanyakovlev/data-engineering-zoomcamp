@@ -14,6 +14,14 @@ How many rows does that dataset have?
 * 299,234
 * 822,132
 
+### Answer
+
+```sh
+python flows/etl_web_to_gcs.py
+...
+# 20:12:13.958 | INFO    | Task run 'clean-b9fd7e03-0' - rows: 447770
+```
+answer: `447,770`
 
 ## Question 2. Scheduling with Cron
 
@@ -26,6 +34,9 @@ Using the flow in `etl_web_to_gcs.py`, create a deployment to run on the first o
 - `5 * 1 0 *`
 - `* * 5 1 0`
 
+### Answer
+
+answer: `0 5 1 * *`
 
 ## Question 3. Loading data to BigQuery 
 
@@ -47,6 +58,19 @@ Make sure you have the parquet data files for Yellow taxi data for Feb. 2019 and
 - 11,338,483
 
 
+### Answer
+
+```sh
+prefect deployment build -n q-3 flows/etl_gcs_to_bq.py:etl_parent_flow \
+    --apply --params='{"color": "yellow", "year": 2019, "months": [2, 3]}'
+prefect deployment apply etl_parent_flow-deployment.yaml
+prefect deployment run etl-parent-flow/q-3
+...
+23:54:13.220 | INFO    | Flow run 'paper-limpet' - total rows: 14851920
+```
+answer: `14,851,920`
+
+
 
 ## Question 4. Github Storage Block
 
@@ -64,6 +88,20 @@ How many rows were processed by the script?
 - 190,225
 
 
+### Answer
+
+[github repo with flows](https://github.com/romanyakovlev/prefect-zoomcamp)
+
+```sh
+prefect deployment build -n q-4 -sb github/ghtest \
+    flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs --apply \
+    --params='{"color": "green", "year": 2020, "month": 11}'
+prefect deployment apply etl_web_to_gcs-deployment.yaml
+prefect deployment run etl-parent-flow/q-4
+...
+rows: 88605
+```
+answer: `88,605`
 
 ## Question 5. Email or Slack notifications
 
@@ -93,6 +131,17 @@ How many rows were processed by the script?
 - `728,390`
 - `514,392`
 
+```sh
+prefect deployment build -n q-5 -sb github/ghtest \
+    flows/02_gcp/etl_web_to_gcs.py:etl_web_to_gcs --apply \
+    --params='{"color": "green", "year": 2019, "month": 4}'
+prefect deployment apply etl_web_to_gcs-deployment.yaml
+prefect deployment run etl-parent-flow/q-5
+...
+rows: 514392
+```
+answer: `514,392`
+
 
 ## Question 6. Secrets
 
@@ -103,6 +152,7 @@ Prefect Secret blocks provide secure, encrypted storage in the database and obfu
 - 8
 - 10
 
+answer: `8`
 
 ## Submitting the solutions
 
@@ -114,5 +164,4 @@ Deadline: 8 February (Wednesday), 22:00 CET
 
 ## Solution
 
-* Video: https://youtu.be/L04lvYqNlc0
-* Code: TBA
+We will publish the solution here

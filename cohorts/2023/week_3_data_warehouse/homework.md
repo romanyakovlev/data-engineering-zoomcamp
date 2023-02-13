@@ -112,7 +112,7 @@ answer: `GCP Bucket`
 It is best practice in Big Query to always cluster your data:
 - True
 - False
-- 
+
 ### Answer
 
 answer: `False`
@@ -122,6 +122,10 @@ A better format to store these files may be parquet. Create a data pipeline to d
 
 
 Note: Column types for all files used in an External Table must have the same datatype. While an External Table may be created and shown in the side panel in Big Query, this will need to be validated by running a count query on the External Table to check if any errors occur. 
+
+### Answer
+
+answer: [link to flow](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/cohorts/2023/week_3_data_warehouse/flows/etl_web_to_gcs_parquet.py)
  
 ## Submitting the solutions
 

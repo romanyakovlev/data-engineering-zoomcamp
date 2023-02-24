@@ -31,6 +31,16 @@ You should find the views and models for querying in your DWH.
 - 61648442
 - 71648442
 
+#### Answer
+
+```sql
+SELECT count(*) FROM  sacred-alloy-375819.dbt_ryakovlev.fact_trips
+WHERE EXTRACT(YEAR FROM pickup_datetime) IN (2019,2020)
+```
+```
+61602986
+```
+answer: 61648442
 
 ### Question 2: 
 
@@ -43,7 +53,9 @@ You will need to complete "Visualising the data" videos, either using [google da
 - 76.3/23.7
 - 99.1/0.9
 
+#### Answer
 
+answer: 89.9/10.1
 
 ### Question 3: 
 
@@ -57,6 +69,16 @@ Filter records with pickup time in year 2019.
 - 53244696
 - 63244696
 
+#### Answer
+
+```sql
+SELECT count(*) FROM  sacred-alloy-375819.dbt_ryakovlev.stg_fhv_tripdata
+WHERE EXTRACT(YEAR FROM pickup_datetime) = 2019
+```
+```
+43244696
+```
+answer: 43244696
 
 ### Question 4: 
 
@@ -71,6 +93,17 @@ Run it via the CLI without limits (is_test_run: false) and filter records with p
 - 32998722
 - 42998722
 
+#### Answer
+
+```sql
+SELECT count(*) FROM sacred-alloy-375819.dbt_ryakovlev.fact_fhv_trips
+WHERE EXTRACT(YEAR FROM pickup_datetime) = 2019
+```
+```
+22998722
+```
+answer: 22998722
+
 ### Question 5: 
 
 **What is the month with the biggest amount of rides after building a tile for the fact_fhv_trips table?**
@@ -82,7 +115,9 @@ Create a dashboard with some tiles that you find interesting to explore the data
 - January
 - December
 
+#### Answer
 
+answer: January
 
 ## Submitting the solutions
 

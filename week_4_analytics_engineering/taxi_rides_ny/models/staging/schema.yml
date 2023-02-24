@@ -4,10 +4,10 @@ version: 2
 sources:
     - name: staging
       #For bigquery:
-      #database: taxi-rides-ny-339813
+      database: sacred-alloy-375819
 
       # For postgres:
-      database: production
+      #database: europe-datazoom-bucket
 
       schema: trips_data_all
 
@@ -15,6 +15,7 @@ sources:
       tables:
         - name: green_tripdata
         - name: yellow_tripdata
+        - name: fhv_tripdata
          # freshness:
            # error_after: {count: 6, period: hour}
 
@@ -201,3 +202,25 @@ models:
             description: Total amount of all tolls paid in trip.
           - name: Total_amount 
             description: The total amount charged to passengers. Does not include cash tips.
+    
+    - name: stg_fhv_tripdata
+      description: >
+          Trips made by For-hire vehicles (FHV).
+      columns:
+          - name: dispatching_base_num
+          - name: pickup_datetime
+          - name: dropoff_datetime
+          - name: pickup_locationid
+            tests:
+              - relationships:
+                  to: ref('taxi_zone_lookup')
+                  field: locationid
+                  severity: warn
+          - name: dropoff_locationid
+            tests:
+              - relationships:
+                  to: ref('taxi_zone_lookup')
+                  field: locationid
+                  severity: warn
+          - name: sr_flag
+          - name: affiliated_base_number

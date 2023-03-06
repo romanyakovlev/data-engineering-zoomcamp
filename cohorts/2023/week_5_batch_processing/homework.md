@@ -21,6 +21,10 @@ What's the output?
 - 5.4
 </br></br>
 
+#### Answer
+
+asnwer: 3.3.2
+
 
 ### Question 2: 
 
@@ -38,6 +42,9 @@ What is the average size of the Parquet (ending with .parquet extension) Files t
 - 250MB
 </br></br>
 
+#### Answer
+
+asnwer: 24MB
 
 ### Question 3: 
 
@@ -52,6 +59,9 @@ Consider only trips that started on June 15.</br>
 - 50,982
 </br></br>
 
+#### Answer
+
+asnwer: 452,470
 
 ### Question 4: 
 
@@ -66,6 +76,10 @@ How long was the longest trip in Hours?</br>
 - 3.32 Hours
 </br></br>
 
+#### Answer
+
+asnwer: 66.87 Hours
+
 ### Question 5: 
 
 **User Interface**
@@ -78,6 +92,9 @@ How long was the longest trip in Hours?</br>
 - 8080
 </br></br>
 
+#### Answer
+
+asnwer: 4040
 
 ### Question 6: 
 
@@ -94,8 +111,9 @@ Using the zone lookup data and the fhvhv June 2021 data, what is the name of the
 - Crown Heights North
 </br></br>
 
+#### Answer
 
-
+asnwer: Crown Heights North
 
 ## Submitting the solutions
 

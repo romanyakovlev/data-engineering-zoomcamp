@@ -43,6 +43,5 @@ if __name__ == '__main__':
         'group_id': 'consumer.group.id.csv-example.1',
     }
     csv_consumer = RideCSVConsumer(props=config)
-    topics = [CONSUME_TOPIC_FHV_RIDES_CSV, CONSUME_TOPIC_GREEN_RIDES_CSV]
     topics = [CONSUME_TOPIC_RIDES_CSV]
     csv_consumer.consume_from_kafka(topics=topics)

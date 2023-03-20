@@ -102,7 +102,7 @@ Your code should include following
 2. Pyspark-streaming-application that reads two kafka topics
    and writes both of them in topic rides_all and apply aggregations to find most popular pickup location.
 
-   
+answer: [link](https://github.com/romanyakovlev/data-engineering-zoomcamp/tree/main/cohorts/2023/week_6_stream_processing/pyspark)
 ## Submitting the solutions
 
 * Form for submitting: https://forms.gle/rK7268U92mHJBpmW7

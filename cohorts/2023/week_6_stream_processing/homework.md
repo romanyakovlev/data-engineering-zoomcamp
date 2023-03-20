@@ -13,6 +13,13 @@ programming language (Python or Java).
 - Retention configuration ensures the messages not get lost over specific period of time.
 - Group-Id ensures the messages are distributed to associated consumers
 
+answer: 
+
+True statements are:
+- Kafka Node is responsible to store topics
+- Zookeeper is removed from Kafka cluster starting from version 4.0
+- Retention configuration ensures the messages not get lost over specific period of time.
+- Group-Id ensures the messages are distributed to associated consumers
 
 ### Question 2: 
 
@@ -23,7 +30,11 @@ programming language (Python or Java).
 - Consumer Group Id
 - Ack All
 
+answer: 
 
+True statements are:
+- Topic Replication
+- Ack All
 
 ### Question 3: 
 
@@ -34,6 +45,11 @@ programming language (Python or Java).
 - Consumer Group Id
 - Ack All
 
+answer: 
+
+True statements are:
+- Topic Paritioning
+- Consumer Group Id
 
 ### Question 4: 
 
@@ -47,6 +63,11 @@ Consider cardinality of the field you have selected and scaling aspects of your 
 - tpep_pickup_datetime
 - tpep_dropoff_datetime
 
+answer: 
+
+True statements are:
+- vendor_id
+- passenger_count
 
 ### Question 5: 
 
@@ -59,6 +80,13 @@ Consider cardinality of the field you have selected and scaling aspects of your 
 - Offset
 - Cluster Key and Cluster-Secret
 
+answer: 
+
+True statements are:
+- Deserializer Configuration
+- Group-Id
+- Offset
+- Topics Subscription
 
 ### Question 6:
 

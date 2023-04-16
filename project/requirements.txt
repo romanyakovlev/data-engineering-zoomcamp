@@ -1,0 +1,5 @@
+prefect==2.10.4
+pandas==2.0.0
+prefect-gcp==0.4.0
+kaggle==1.5.13
+gcsfs==2023.4.0

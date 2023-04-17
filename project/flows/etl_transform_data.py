@@ -4,6 +4,8 @@ import re
 from google.cloud import dataproc_v1
 from google.cloud import storage
 from prefect_gcp import GcpCredentials
+from prefect.filesystems import GCS
+from pathlib import Path
 
 
 @task
@@ -41,10 +43,17 @@ def gcp_flow(*your_args):
     submit_dataproc_job(*your_args)
 
 
+@flow
+def upload_pyspark_jobs_gcs(local_path: str = "pyspark_jobs", to_path: str = "jobs"):
+    gcs_block = GCS.load("spotify-gcs")
+    gcs_block.put_directory(local_path=local_path, to_path=to_path)
+
+
 if __name__ == "__main__":
     region = "europe-west6"
     cluster_name = "cluster-47d0"
-    gcs_bucket = "prefect-de-zoomcamp-ry"
+    gcs_bucket = "spotify_data_lake_sacred-alloy-375819"
     spark_filename = "jobs/pyspark_job.py"
     project_id = "sacred-alloy-375819"
+    upload_pyspark_jobs_gcs()
     gcp_flow(region, cluster_name, gcs_bucket, spark_filename, project_id)

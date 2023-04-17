@@ -14,14 +14,12 @@ import kaggle
 def fetch_spotify_dataset() -> Path:
     """Read taxi data from web into csv file"""
     dataset = "dhruvildave/spotify-charts"
-    """
     kaggle.api.dataset_download_files(
         dataset=dataset,
         path="./data",
         quiet=False,
         force=True,
     )
-    """
     return Path("./data/spotify-charts.zip")
 
 
@@ -37,7 +35,7 @@ def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
 @task(log_prints=True)
 def write_gcs(path: Path) -> None:
     """Upload local csv file to GCS"""
-    gcs_block = GCS.load("zoom-gcs")
+    gcs_block = GCS.load("spotify-gcs")
     with open(path, "r") as file:
         csv_data = file.read()
     gcs_block.write_path(path=path.as_posix(), content=csv_data.encode('utf-8'))
@@ -47,12 +45,15 @@ def write_gcs(path: Path) -> None:
 def repartition_large_file(source_path: Path, chunksize: int = 1000000) -> List[Path]:
     path_list = []
     Path(f"./data/chunks").mkdir(parents=True, exist_ok=True)
+    c = 0
     for i, chunk in enumerate(pd.read_csv(source_path, chunksize=chunksize)):
         chunk_file_path = Path(f"./data/chunks/charts_{i}.csv")
         chunk.to_csv(chunk_file_path)
         path_list.append(chunk_file_path)
         print(f"chunk {chunk_file_path} is created")
-        break
+        c += 1
+        if c == 5:
+            break
     return path_list
 
 

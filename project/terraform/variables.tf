@@ -1,5 +1,6 @@
 locals {
   data_lake_bucket = "spotify_data_lake"
+  cluster = "spotify-cluster"
 }
 
 variable "project" {

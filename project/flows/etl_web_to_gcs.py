@@ -1,41 +1,29 @@
-from pathlib import Path
-import pandas as pd
-from prefect import flow, task
-from prefect_gcp.cloud_storage import GcsBucket
-from random import randint
-from typing import List
-from prefect.filesystems import GCS
-import io
-import numpy as np
 import kaggle
+import pandas as pd
+from pathlib import Path
+from typing import List
+from prefect import flow, task
+from prefect.filesystems import GCS
 
 
-@task(retries=3, log_prints=True)
-def fetch_spotify_dataset() -> Path:
-    """Read taxi data from web into csv file"""
-    dataset = "dhruvildave/spotify-charts"
+gcs_block = GCS.load("spotify-gcs")
+
+
+@task(log_prints=True)
+def fetch_spotify_dataset(dataset: str, dir_path: str, dataset_path: str) -> Path:
+    """Fetch spotify dataset and return Path object"""
     kaggle.api.dataset_download_files(
         dataset=dataset,
-        path="./data",
+        path=dir_path,
         quiet=False,
         force=True,
     )
-    return Path("./data/spotify-charts.zip")
-
-
-@task()
-def write_local(df: pd.DataFrame, color: str, dataset_file: str) -> Path:
-    """Write DataFrame out locally as parquet file"""
-    path = Path(f"data/{color}/{dataset_file}.parquet")
-    Path(f"data/{color}").mkdir(parents=True, exist_ok=True)
-    df.to_parquet(path, compression="gzip")
-    return path
+    return Path(dataset_path)
 
 
 @task(log_prints=True)
 def write_gcs(path: Path) -> None:
-    """Upload local csv file to GCS"""
-    gcs_block = GCS.load("spotify-gcs")
+    """Upload local csv chunk file to GCS"""
     with open(path, "r") as file:
         csv_data = file.read()
     gcs_block.write_path(path=path.as_posix(), content=csv_data.encode('utf-8'))
@@ -70,7 +58,8 @@ def clean(path: Path) -> None:
 @flow()
 def etl_web_to_gcs() -> None:
     """The main ETL function"""
-    path = fetch_spotify_dataset()
+    dataset, dir_path, dataset_path = "dhruvildave/spotify-charts", "./data", "./data/spotify-charts.zip"
+    path = fetch_spotify_dataset(dataset, dir_path, dataset_path)
     chunk_path_list = repartition_large_file(path)
     for chunk_path in chunk_path_list:
         clean(chunk_path)

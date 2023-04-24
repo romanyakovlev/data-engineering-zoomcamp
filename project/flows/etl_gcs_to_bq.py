@@ -44,12 +44,12 @@ def etl_bq_external_table_to_optimized_table():
         warehouse.execute(query)
 
 
-@flow(log_prints=True)
-def etl_gcs_to_bq_flow():
+@flow(name="Subflow - GCS to BQ step", log_prints=True)
+def etl_gcs_to_bq():
     """Main ETL flow to load data into Big Query"""
     etl_gcs_to_bq_external_table()
     etl_bq_external_table_to_optimized_table()
 
 
 if __name__ == "__main__":
-    etl_gcs_to_bq_flow()
+    etl_gcs_to_bq()

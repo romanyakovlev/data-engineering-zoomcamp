@@ -1,4 +1,5 @@
 import re
+import os
 
 from prefect import task, flow
 from prefect.filesystems import GCS
@@ -11,7 +12,7 @@ gcp_credentials_block = GcpCredentials.load("gcp-creds")
 
 
 @task
-def submit_dataproc_job(region: str, cluster_name: str, gcs_bucket: str, spark_filename:str, project_id: str) -> None:
+def submit_dataproc_job(region: str, cluster_name: str, spark_filename: str) -> None:
     # Create the job client.
     job_client = dataproc_v1.JobControllerClient(
         client_options={"api_endpoint": "{}-dataproc.googleapis.com:443".format(region)},
@@ -21,12 +22,13 @@ def submit_dataproc_job(region: str, cluster_name: str, gcs_bucket: str, spark_f
     job = {
         "placement": {"cluster_name": cluster_name},
         "pyspark_job": {
-            "main_python_file_uri": "gs://{}/{}".format(gcs_bucket, spark_filename),
+            "main_python_file_uri": "gs://{}/{}".format(gcs_block.bucket_path, spark_filename),
             "jar_file_uris": ("gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar",),
+            "args": [f"--project_id={gcp_credentials_block.project}"],
         },
     }
     operation = job_client.submit_job_as_operation(
-        request={"project_id": project_id, "region": region, "job": job}
+        request={"project_id": gcp_credentials_block.project, "region": region, "job": job}
     )
     response = operation.result()
     matches = re.match("gs://(.*?)/(.*)", response.driver_output_resource_uri)
@@ -44,34 +46,16 @@ def upload_pyspark_jobs_to_gcs(local_path: str = "pyspark_jobs", to_path: str = 
     gcs_block.put_directory(local_path=local_path, to_path=to_path)
 
 
-@flow
-def etl_transform_data(
-        region: str,
-        cluster_name: str,
-        gcs_bucket: str,
-        spark_filename:str,
-        project_id: str,
-        pyspark_local_path: str,
-        pyspark_gcs_path: str
-):
+@flow(log_prints=True, name="Subflow - Data Transformation step")
+def etl_transform_data():
+    cluster_name = os.environ["CLUSTER_NAME"]
+    region = os.environ["CLUSTER_REGION"]
+    spark_filename = "jobs/pyspark_job.py"
+    pyspark_local_path = "pyspark_jobs"
+    pyspark_gcs_path = "jobs"
     upload_pyspark_jobs_to_gcs(pyspark_local_path, pyspark_gcs_path)
-    submit_dataproc_job(region, cluster_name, gcs_bucket, spark_filename, project_id)
+    submit_dataproc_job(region, cluster_name, spark_filename)
 
 
 if __name__ == "__main__":
-    region = "us-central1"
-    cluster_name = "spotify-cluster-sacred-alloy-375819"
-    gcs_bucket = "spotify_data_lake_sacred-alloy-375819"
-    spark_filename = "jobs/pyspark_job.py"
-    project_id = "sacred-alloy-375819"
-    pyspark_local_path = "pyspark_jobs"
-    pyspark_gcs_path = "jobs"
-    etl_transform_data(
-        region,
-        cluster_name,
-        gcs_bucket,
-        spark_filename,
-        project_id,
-        pyspark_local_path,
-        pyspark_gcs_path
-    )
+    etl_transform_data()

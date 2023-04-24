@@ -55,7 +55,7 @@ def clean(path: Path) -> None:
     print(f"chunk {path.as_posix()} is cleaned")
 
 
-@flow()
+@flow(log_prints=True, name="Subflow - Web to GCS step")
 def etl_web_to_gcs() -> None:
     """The main ETL function"""
     dataset, dir_path, dataset_path = "dhruvildave/spotify-charts", "./data", "./data/spotify-charts.zip"

@@ -30,3 +30,50 @@ The goal is creating 4 charts:
 * Spark: Distributed Processing
 * Looker studio: Data Visualisation
 
+# How to run
+
+## Prerequisites
+
+To run project you need to:
+
+1. Install the following requirements:
+* [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+* [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+
+2. Create an account in [Google Cloud Platform (GCP)](https://cloud.google.com/) 
+3. Create project in GCP
+4. Create service acccount with following roles:
+* BigQuery Admin
+* Dataproc Administrator
+* Dataproc Editor
+* Editor
+* Storage Admin
+* Storage Object Admin 
+
+3. Generate service account credentials in json format.
+
+4. Create .env file in root directory:
+```sh
+"     
+GOOGLE_APPLICATION_CREDENTIALS=
+
+PROJECT_ID=
+
+KAGGLE_USERNAME=
+KAGGLE_KEY=
+
+PREFECT_CLOUD_API_KEY=
+PREFECT_CLOUD_WORKSPACE=
+
+CLUSTER_NAME=
+CLUSTER_REGION=
+" > .env
+
+```
+
+5. Specify `GOOGLE_APPLICATION_CREDENTIALS` as variable path to service account credentials.
+6. Speficy `PROJECT_ID` as project id in GCP.
+
+## Initialize Infrastructure
+
+1. Run 

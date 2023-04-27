@@ -72,8 +72,62 @@ CLUSTER_REGION=
 ```
 
 5. Specify `GOOGLE_APPLICATION_CREDENTIALS` as variable path to service account credentials.
-6. Speficy `PROJECT_ID` as project id in GCP.
+6. Specify `PROJECT_ID` as project id in GCP.
+7. Register in Kaggle and create [API key](https://github.com/Kaggle/kaggle-api)
+8. Specify `KAGGLE_KEY` as API key and `KAGGLE_USERNAME` as username from Kaggle.
+9. Register in [Prefect Cloud](https://app.prefect.cloud/), create API key and workspace.
+10. Specify `PREFECT_CLOUD_API_KEY` as API key and `PREFECT_CLOUD_WORKSPACE` as workspace from Prefect.
+11. In Prefect create GCS `spotify-gcs` and GCP Credentials `gcp-creds` blocks.
 
 ## Initialize Infrastructure
 
-1. Run 
+1. Run Infrastructure Initialization via Terraform in `1_init_infra.sh` script:
+```sh
+export $(cat .env | xargs)
+
+terraform init
+terraform plan -var="project=$PROJECT_ID"
+terraform apply -var="project=$PROJECT_ID"
+```
+2. Specify `CLUSTER_NAME` as Dataproc cluster name
+3. Specify `CLUSTER_REGION` as Dataproc cluster region
+
+## Prepare Environment
+
+1. Prepare environment for deploy
+
+```sh
+export $(cat .env | xargs)
+
+# install dependencies
+sudo apt-get install python3-venv
+python3 -m venv spotify_project_venv
+source spotify_project_venv/bin/activate
+pip install -r requirements.txt
+
+# start prefect agent
+prefect cloud login -k $PREFECT_CLOUD_API_KEY
+prefect agent start -q 'default'
+```
+
+## Deploy
+
+1. Run prefect agent
+
+```sh
+
+prefect agent start -q 'default'
+```
+
+2. Run deploy in Prefect
+
+```sh
+export $(cat .env | xargs)
+
+source spotify_project_venv/bin/activate
+prefect deployment build flows/etl_flow.py:etl_flow -n etl-flow --apply
+prefect deployment apply etl_flow-deployment.yaml
+prefect deployment run "Main flow/etl-flow"
+
+```
+

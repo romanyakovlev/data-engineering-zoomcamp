@@ -10,7 +10,7 @@ The goal is creating 4 charts:
 3. Show the most popular song in all regions (the most frequent top 1 song)
 4. Show the most popular artist in all regions (the sum of the most frequent top 1 songs)
 
-## The results
+## The result
 
 ![page 1-2](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/project/imgs/1.jpg?raw=true)
 ![page 3-4](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/project/imgs/2.jpg?raw=true)
@@ -79,9 +79,9 @@ CLUSTER_REGION=
 10. Specify `PREFECT_CLOUD_API_KEY` as API key and `PREFECT_CLOUD_WORKSPACE` as workspace from Prefect.
 11. In Prefect create GCS `spotify-gcs` and GCP Credentials `gcp-creds` blocks.
 
-## Initialize Infrastructure
+## 1. Initialize Infrastructure
 
-1. Run Infrastructure Initialization via Terraform in `1_init_infra.sh` script:
+1. Run Infrastructure Initialization via Terraform (`1_init_infra.sh` script):
 ```sh
 export $(cat .env | xargs)
 
@@ -92,9 +92,9 @@ terraform apply -var="project=$PROJECT_ID"
 2. Specify `CLUSTER_NAME` as Dataproc cluster name
 3. Specify `CLUSTER_REGION` as Dataproc cluster region
 
-## Prepare Environment
+## 2. Prepare Environment
 
-1. Prepare environment for deploy
+1. Prepare environment for deploy (`2_prepare_env.sh` script):
 
 ```sh
 export $(cat .env | xargs)
@@ -110,7 +110,7 @@ prefect cloud login -k $PREFECT_CLOUD_API_KEY
 prefect agent start -q 'default'
 ```
 
-## Deploy
+## 3. Deploy
 
 1. Run prefect agent
 
@@ -119,7 +119,7 @@ prefect agent start -q 'default'
 prefect agent start -q 'default'
 ```
 
-2. Run deploy in Prefect
+2. Run flow in Prefect (`3_deploy.sh` script):
 
 ```sh
 export $(cat .env | xargs)

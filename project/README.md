@@ -50,6 +50,8 @@ To run project you need to:
 * Storage Admin
 * Storage Object Admin 
 
+5. Enabled `Cloud Dataproc API` in `APIs & Services` page.
+
 3. Generate service account credentials in json format.
 
 4. Create .env file in root directory:

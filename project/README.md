@@ -50,7 +50,7 @@ To run project you need to:
 * Storage Admin
 * Storage Object Admin 
 
-5. Enabled `Cloud Dataproc API` in `APIs & Services` page.
+5. Enable `Cloud Dataproc API` and `Artifact Registry` in GCP.
 
 3. Generate service account credentials in json format.
 

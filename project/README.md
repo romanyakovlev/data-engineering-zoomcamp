@@ -12,6 +12,8 @@ The goal is creating 4 charts:
 
 ## The result
 
+[Looker Studio Report](https://lookerstudio.google.com/reporting/41370c48-d670-4648-ad94-eef6cb7a861c)
+
 ![page 1-2](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/project/imgs/1.jpg?raw=true)
 ![page 3-4](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/project/imgs/2.jpg?raw=true)
 

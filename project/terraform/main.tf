@@ -48,12 +48,12 @@ resource "google_bigquery_dataset" "dataset" {
 # Dataproc cluster
 resource "google_dataproc_cluster" "simplecluster" {
   name   = "${local.cluster}-${var.project}"
-  region = "us-central1"
+  region = var.region
 }
 
 # Artifact Registry
 resource "google_artifact_registry_repository" "agent-repo" {
-  location      = "us-central1"
+  location      = var.region
   repository_id = "spotify"
   description   = "spotify docker repository"
   format        = "DOCKER"
@@ -63,7 +63,7 @@ resource "google_artifact_registry_repository" "agent-repo" {
 resource "google_compute_instance" "default" {
   name         = "prefect-agent"
   machine_type = "e2-medium"
-  zone         = "us-central1-a"
+  zone         = var.region
 
   tags = ["http-server", "https-server"]
 
@@ -79,5 +79,5 @@ resource "google_compute_instance" "default" {
 
   # set ssh port to 80
   metadata_startup_script = "echo \"Port 80\" > /etc/ssh/sshd_config; sudo systemctl reload sshd.service"
- 
+
 }

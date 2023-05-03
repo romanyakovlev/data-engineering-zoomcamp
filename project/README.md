@@ -19,6 +19,8 @@ The goal is creating 4 charts:
 
 # Project Structure
 
+The result is serverless application which has the following scheme
+
 ![flowchart](https://github.com/romanyakovlev/data-engineering-zoomcamp/blob/main/project/imgs/flowchart.png?raw=true)
 
 ## What is used
@@ -47,14 +49,17 @@ To run project you need to:
 2. Create an account in [Google Cloud Platform (GCP)](https://cloud.google.com/) 
 3. Create project in GCP
 4. Create service acccount with following roles:
+* Artifact Registry Reader
+* Artifact Registry Writer
 * BigQuery Admin
+* Cloud Run Admin
 * Dataproc Administrator
 * Dataproc Editor
 * Editor
 * Storage Admin
 * Storage Object Admin 
 
-5. Enable `Cloud Dataproc API` and `Artifact Registry` in GCP.
+5. Enable `Cloud Dataproc API`, `Compute Engine API `, `Cloud Run Admin API `, `Artifact Registry API ` and `BigQuery API` in GCP.
 
 3. Generate service account credentials in json format.
 

@@ -50,3 +50,34 @@ resource "google_dataproc_cluster" "simplecluster" {
   name   = "${local.cluster}-${var.project}"
   region = "us-central1"
 }
+
+# Artifact Registry
+resource "google_artifact_registry_repository" "agent-repo" {
+  location      = "us-central1"
+  repository_id = "spotify"
+  description   = "spotify docker repository"
+  format        = "DOCKER"
+}
+
+# Compute Engine VM Instance
+resource "google_compute_instance" "default" {
+  name         = "prefect-agent"
+  machine_type = "e2-medium"
+  zone         = "us-central1-a"
+
+  tags = ["http-server", "https-server"]
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+
+  network_interface {
+    network = "default"
+  }
+
+  # set ssh port to 80
+  metadata_startup_script = "echo \"Port 80\" > /etc/ssh/sshd_config; sudo systemctl reload sshd.service"
+ 
+}

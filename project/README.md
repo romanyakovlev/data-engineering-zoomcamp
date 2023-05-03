@@ -26,6 +26,8 @@ The goal is creating 4 charts:
 * Google Cloud Platform (GCP):        
   * Google Cloud Storage (GCS): Data Lake - stores raw data
   * BigQuery: Data Warehouse - stores optimized tables
+  * Cloud Compute - runs prefect agent
+  * Cloud Run - runs flow in a dockerized environment
   * DataProc - runs PySpark jobs in cloud cluster
 * Terraform: Infrastructure-as-Code (IaC)
 * Prefect: Workflow Orchestration

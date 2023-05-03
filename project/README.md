@@ -87,8 +87,7 @@ CLUSTER_REGION=
 8. Specify `KAGGLE_KEY` in `.env` as API key and `KAGGLE_USERNAME` as username from Kaggle.
 9. Register in [Prefect Cloud](https://app.prefect.cloud/), create API key and workspace.
 10. Specify `PREFECT_CLOUD_API_KEY` in `.env` as API key from Prefect Cloud.
-11. Specify `CLUSTER_NAME` and `CLUSTER_REGION` in `.env` from Cloud Run Cluster.
-12. In Prefect create GCS `spotify-gcs` and GCP Credentials `gcp-creds` blocks.
+11. In Prefect create GCS `spotify-gcs` and GCP Credentials `gcp-creds` blocks.
 
 ## 1. Initialize Infrastructure
 

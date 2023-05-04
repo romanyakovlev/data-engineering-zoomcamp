@@ -159,9 +159,39 @@ prefect deployment build -n "Spotify Top Charts Flow" \
 gcloud compute ssh --zone "$GCP_REGION" "prefect-agent" --project "$GCP_PROJECT_ID" --ssh-flag="-p 80”
 ```
 
-2. 
+2. type `nano script.sh` and paste the following input
 
-## 6. Run Spotify Flow
+```sh
+#!/bin/bash
+sudo apt-get update -y
+sudo apt-get upgrade -y
+sudo apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    software-properties-common \
+    python3-dateutil \
+    python3-distutils \
+    python3-apt \
+    wget
+sudo ln -s /usr/bin/python3 /usr/bin/python
+wget https://bootstrap.pypa.io/get-pip.py
+sudo python3 get-pip.py
+PATH="$HOME/.local/bin:$PATH"
+export PATH
+pip3 install prefect prefect-gcp
+prefect cloud login -k <INSERT_PREFECT_API_KEY>
+```
+where `<INSERT_PREFECT_API_KEY>` is Prefect API KEY
+
+3. Start tmux session with working Prefect Agent
+
+```sh
+tmux new-session -d -s prefect 'prefect agent start -q default’
+```
+
+## 6. Run Spotify TOP Charts Flow
 
 Run flow through terminal locally
 

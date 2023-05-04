@@ -156,8 +156,10 @@ prefect deployment build -n "Spotify Top Charts Flow" \
 1. Connect to VM
 
 ```sh
-gcloud compute ssh --zone "$GCP_REGION" "prefect-agent" --project "$GCP_PROJECT_ID" --ssh-flag="-p 80”
+gcloud compute ssh --zone "<ZONE>" "prefect-agent" --project "<PROJECT_ID>" --ssh-flag="-p 80”
 ```
+
+where `ZONE>` is cluster zone and `<PROJECT_ID>` is project id.
 
 2. type `nano script.sh` and paste the following input
 

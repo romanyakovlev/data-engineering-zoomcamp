@@ -117,7 +117,7 @@ source spotify_project_venv/bin/activate
 
 ## 3. Push
 
-Push CloudRun image to Artifact Registry
+Push CloudRun image to Artifact Registry (3_push.sh script):
 
 ```sh
 
@@ -148,7 +148,25 @@ prefect deployment build -n "Spotify Top Charts Flow" \
     -ib cloud-run-job/spotify-cloud-run-job \
     flows/etl_flow.py:etl_flow \
     -q default -a --path /app/flows
-prefect deployment run "Main flow/Spotify Top Charts Flow"
 
 ```
 
+## 5. Run Prefect Agent in VM
+
+1. Connect to VM
+
+```sh
+gcloud compute ssh --zone "$GCP_REGION" "prefect-agent" --project "$GCP_PROJECT_ID" --ssh-flag="-p 80”
+```
+
+2. 
+
+## 6. Run Spotify Flow
+
+Run flow through terminal locally
+
+```sh
+prefect deployment run "Main flow/Spotify Top Charts Flow"
+```
+
+or use Prefect Cloud instead.

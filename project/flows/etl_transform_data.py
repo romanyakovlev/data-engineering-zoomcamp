@@ -48,8 +48,8 @@ def upload_pyspark_jobs_to_gcs(local_path: str = "pyspark_jobs", to_path: str = 
 
 @flow(log_prints=True, name="Subflow - Data Transformation step")
 def etl_transform_data():
-    cluster_name = os.environ["CLUSTER_NAME"]
-    region = os.environ["CLUSTER_REGION"]
+    cluster_name = os.environ["GCP_CLUSTER_NAME"]
+    region = os.environ["GCP_REGION"]
     spark_filename = "jobs/pyspark_job.py"
     pyspark_local_path = "pyspark_jobs"
     pyspark_gcs_path = "jobs"

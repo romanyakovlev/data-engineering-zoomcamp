@@ -31,6 +31,7 @@ The result is serverless application which has the following scheme
   * Cloud Compute - runs prefect agent
   * Cloud Run - runs flow in a dockerized environment
   * DataProc - runs PySpark jobs in cloud cluster
+  * Artifact Registry - stores docker images for flows
 * Terraform: Infrastructure-as-Code (IaC)
 * Prefect: Workflow Orchestration
 * Spark: Distributed Processing

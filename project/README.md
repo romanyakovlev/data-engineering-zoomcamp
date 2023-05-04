@@ -68,13 +68,14 @@ To run project you need to:
 "     
 GOOGLE_APPLICATION_CREDENTIALS=
 
-GCP_PROJECT_ID=
-
 KAGGLE_USERNAME=
 KAGGLE_KEY=
 
 PREFECT_CLOUD_API_KEY=
+PREFECT_CLOUD_WORKSPACE=
 
+GCP_PROJECT_ID=
+GCP_BUCKET_NAME=
 GCP_CLUSTER_NAME=
 GCP_REGION=
 " > .env
@@ -87,7 +88,6 @@ GCP_REGION=
 8. Specify `KAGGLE_KEY` in `.env` as API key and `KAGGLE_USERNAME` as username from Kaggle.
 9. Register in [Prefect Cloud](https://app.prefect.cloud/), create API key and workspace.
 10. Specify `PREFECT_CLOUD_API_KEY` in `.env` as API key from Prefect Cloud.
-11. In Prefect create GCS `spotify-gcs` and GCP Credentials `gcp-creds` blocks.
 
 ## 1. Initialize Infrastructure
 
@@ -104,7 +104,7 @@ terraform apply -var="project=$GCP_PROJECT_ID"
 
 ## 2. Prepare Environment
 
-1. Prepare environment for deploy (`2_prepare_env.sh` script):
+Prepare environment for deploy (`2_prepare_env.sh` script):
 
 ```sh
 export $(cat .env | xargs)
@@ -113,31 +113,42 @@ export $(cat .env | xargs)
 sudo apt-get install python3-venv
 python3 -m venv spotify_project_venv
 source spotify_project_venv/bin/activate
-pip install -r requirements.txt
-
-# start prefect agent
-prefect cloud login -k $PREFECT_CLOUD_API_KEY
-prefect agent start -q 'default'
 ```
 
-## 3. Deploy
+## 3. Push
 
-1. Run prefect agent
+Push CloudRun image to Artifact Registry
 
 ```sh
 
-prefect agent start -q 'default'
+export $(cat .env | xargs)
+
+# push image to registry
+docker build -f etc/Dockerfile -t $GCP_REGISTRY_ADDRESS/prefect-flow:python3.9 .
+docker push $GCP_REGISTRY_ADDRESS/prefect-flow:python3.9(spotify_project_venv)
 ```
 
-2. Run flow in Prefect (`3_deploy.sh` script):
+## 4. Deploy
+
+Run deployment in Prefect (`4_deploy.sh` script):
 
 ```sh
 export $(cat .env | xargs)
 
 source spotify_project_venv/bin/activate
-prefect deployment build flows/etl_flow.py:etl_flow -n etl-flow --apply
-prefect deployment apply etl_flow-deployment.yaml
-prefect deployment run "Main flow/etl-flow"
+
+# create prefect blocks
+python blocks/gcp_credentials.py
+python blocks/gcp_big_query.py
+python blocks/gcp_cloud_run_job.py
+python blocks/gcp_cloud_storage.py
+
+# deploy cloud run flow
+prefect deployment build -n "Spotify Top Charts Flow" \
+    -ib cloud-run-job/spotify-cloud-run-job \
+    flows/etl_flow.py:etl_flow \
+    -q default -a --path /app/flows
+prefect deployment run "Main flow/Spotify Top Charts Flow"
 
 ```
 

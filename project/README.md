@@ -68,21 +68,21 @@ To run project you need to:
 "     
 GOOGLE_APPLICATION_CREDENTIALS=
 
-PROJECT_ID=
+GCP_PROJECT_ID=
 
 KAGGLE_USERNAME=
 KAGGLE_KEY=
 
 PREFECT_CLOUD_API_KEY=
 
-CLUSTER_NAME=
-CLUSTER_REGION=
+GCP_CLUSTER_NAME=
+GCP_REGION=
 " > .env
 
 ```
 
 5. Specify `GOOGLE_APPLICATION_CREDENTIALS` in `.env` as variable path to service account credentials.
-6. Specify `PROJECT_ID` in `.env` as project id in GCP.
+6. Specify `GCP_PROJECT_ID` in `.env` as project id in GCP.
 7. Register in Kaggle and create [API key](https://github.com/Kaggle/kaggle-api)
 8. Specify `KAGGLE_KEY` in `.env` as API key and `KAGGLE_USERNAME` as username from Kaggle.
 9. Register in [Prefect Cloud](https://app.prefect.cloud/), create API key and workspace.
@@ -96,11 +96,11 @@ CLUSTER_REGION=
 export $(cat .env | xargs)
 
 terraform init
-terraform plan -var="project=$PROJECT_ID"
-terraform apply -var="project=$PROJECT_ID"
+terraform plan -var="project=$GCP_PROJECT_ID"
+terraform apply -var="project=$GCP_PROJECT_ID"
 ```
-2. Specify `CLUSTER_NAME` as Dataproc cluster name
-3. Specify `CLUSTER_REGION` as Dataproc cluster region
+2. Specify `GCP_CLUSTER_NAME` as Dataproc cluster name
+3. Specify `GCP_REGION` as Dataproc cluster region
 
 ## 2. Prepare Environment
 
